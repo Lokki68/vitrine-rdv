@@ -1,0 +1,25 @@
+= form_with model: [:admin, :blog_posts], class: 'space-y-4' do |form|
+  .form_control
+    = form.label :title, "Titre", class: 'label'
+    = form.text_field :title, class: 'input input-bordered w-full'
+
+  .form_control
+    = form.label :excerpt, "Résumé", class: 'label'
+    = form.text_area :excerpt, rows: 3, class: "textarea textarea-bordered w-full"
+
+  .form-control
+    = f.label :cover, "Image de couverture", class: "label"
+    = f.file_field :cover, class: "file-input file-input-bordered w-full"
+
+  .form-control
+    = f.label :content, "Contenu", class: "label"
+    %div{data: { controller: "editor",
+                 editor_upload_url_value: admin_uploads_image_path }}
+      = f.hidden_field :content, value: post.content.to_json, data: { editor_target: "input" }
+      .border.rounded-lg.p-4.bg-white.min-h-96{data: { editor_target: "holder" }}
+
+  .form-control
+    = f.label :status, "Statut", class: "label"
+    = f.select :status, BlogPost.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "select select-bordered"
+
+  = f.submit "Enregistrer", class: "btn btn-primary"

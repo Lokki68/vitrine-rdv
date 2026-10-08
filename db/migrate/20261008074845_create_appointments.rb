@@ -6,14 +6,16 @@ class CreateAppointments < ActiveRecord::Migration[8.1]
       t.string :client_email, null: false
       t.string :client_phone, null: false
       t.text :client_notes
-      t.datetime :starts_at, null: false
-      t.datetime :ends_at, null: false
+      t.timestamptz :starts_at, null: false
+      t.timestamptz :ends_at, null: false
       t.string :status, null: false, default: "pending_payment"
-      t.datetime :expires_at
+      t.timestamptz :expires_at
       t.string :stripe_checkout_session_id
       t.string :stripe_checkout_intent_id
       t.string :google_event_id
       t.string :cancellation_token, null: false
+      t.timestamptz :paid_at
+      t.timestamptz :cancelled_at
 
       t.timestamps
     end

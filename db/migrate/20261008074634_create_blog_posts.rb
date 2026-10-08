@@ -11,7 +11,7 @@ class CreateBlogPosts < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :blog_posts, :slug, unique => true
+    add_index :blog_posts, :slug, unique: true
     add_index :blog_posts, :status
     add_index :blog_posts, :published_at
   end
