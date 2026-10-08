@@ -1,0 +1,23 @@
+{
+  "name": "app",
+  "private": true,
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+  },
+  "dependencies": {
+    "@editorjs/delimiter": "^1.4.2",
+    "@editorjs/editorjs": "^2.31.7",
+    "@editorjs/embed": "^2.8.0",
+    "@editorjs/header": "^2.8.9",
+    "@editorjs/image": "^2.10.3",
+    "@editorjs/list": "^2.0.9",
+    "@editorjs/paragraph": "^2.11.7",
+    "@editorjs/quote": "^2.7.6",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.23"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
+    "daisyui": "^5.7.47"
+  }
+}

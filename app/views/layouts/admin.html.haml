@@ -1,0 +1,14 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Admin    
+    %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
+    = csrf_meta_tags
+    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
+    = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
+  %body.min-h-screen.bg-base-200
+    = render "admin/shared/navbar"
+    .container.mx-auto.p-6
+      = render "shared/flash"
+      = yield

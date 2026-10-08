@@ -49,3 +49,5 @@ group :development do
   gem "letter_opener"
   gem "html2haml"
 end
+
+gem "jsbundling-rails", "~> 1.3"
