@@ -51,3 +51,5 @@ group :development do
 end
 
 gem "jsbundling-rails", "~> 1.3"
+
+gem "aasm"
