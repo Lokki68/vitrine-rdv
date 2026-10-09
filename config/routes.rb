@@ -31,5 +31,7 @@ Rails.application.routes.draw do
         patch :unpublish
       end
     end
+
+    post 'uploads/images', to: "uploads#image", as: :upload_image
   end
 end

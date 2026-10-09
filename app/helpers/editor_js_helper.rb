@@ -1,4 +1,12 @@
 module EditorJsHelper
+  INLINE_TAGS  = %w[b i a br u mark code strong em].freeze
+  INLINE_ATTRS = %w[href target rel].freeze
+  EMBED_HOSTS  = %w[www.youtube.com youtube.com www.youtube-nocookie.com player.vimeo.com].freeze
+
+  def editorjs_inline(text)
+    sanitize(text.to_s, tags: INLINE_TAGS, attributes: INLINE_ATTRS)
+  end
+
   def render_editorjs(content)
     return "".html_safe unless content.is_a?(Hash) && content['blocks'].is_a?(Array)
 
@@ -12,30 +20,33 @@ module EditorJsHelper
 
     case block["type"]
     when "paragraph"
-      content_tag(:p, sanitize(data["text"], tags: %w[b i a br u mark code], attributes: %w[href]))
+      content_tag(:p, editorjs_inline(data["text"]))
     when "header"
       level = data["level"].to_i.clamp(2, 4)
-      content_tag("h#{level}", sanitize(data["text"], tags: %w[b i a br]))
+      content_tag("h#{level}", editorjs_inline(data["text"]))
     when "list"
       tag = data["style"] == "ordered" ? :ol : :ul
       content_tag(tag) do
-        safe_join(Array(data["items"]).map { |item| content_tag(:li, sanitize(item.is_a?(Hash) ? item["content"] : item)) })
+        safe_join(Array(data["items"]).map { |item| content_tag(:li, editorjs_inline(item.is_a?(Hash) ? item['content'] : item)) })
       end
     when "quote"
       content_tag(:blockquote) do
-        concat content_tag(:p, sanitize(data["text"]))
+        concat content_tag(:p, editorjs_inline(data["text"]))
         concat content_tag(:cite, data["caption"]) if data["caption"].present?
       end
     when "image"
+      url = data.dig("file", "url")
+      return "".html_safe if url.blank?
       content_tag(:figure) do
-        concat image_tag(data.dig("file", "url"), alt: data["caption"], loading: "lazy", class: "rounded-lg")
-        concat content_tag(:figcaption, data["caption"]) if data["caption"].present?
+        concat image_tag(url, alt: data["caption"].to_s, loading: "lazy")
+        concat content_tag(:figcaption, sanitize(data["caption"])) if data["caption"].present?
       end
     when "delimiter"
       tag.hr
     when "embed"
-      tag.iframe(src: data["embed"], width: data["width"], height: data["height"],
-                 loading: "lazy", allowfullscreen: true, class: "w-full aspect-video")
+      uri = (URI.parse(data["embed"].to_s) rescue nil)
+      return "".html_safe unless uri&.host && EMBED_HOSTS.include?(uri.host)
+      tag.iframe(src: data["embed"], loading: "lazy", allowfullscreen: true, class: "w-full aspect-video")
     else
       "".html_safe
     end

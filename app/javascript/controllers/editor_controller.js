@@ -13,6 +13,7 @@ export default class extends Controller {
 
     connect() {
         const initial = this.inputTarget.value
+        this.ready = false
         this.editor = new EditorJS({
             holder: this.holderTarget,
             placeholder: "Ecrivez votre article ...",
@@ -28,7 +29,7 @@ export default class extends Controller {
                     config: {
                         endpoints: { byFile: this.uploadUrlValue },
                         additionalRequestHeaders: {
-                            "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content
+                            "X-CSRF-Token": document.querySelector("meta[name=csrf-token]")?.content
                         }
                     },
 
@@ -39,17 +40,21 @@ export default class extends Controller {
     }
 
     async save() {
+        await this.editor.isReady
         const data = await this.editor.save()
         this.inputTarget.value = JSON.stringify(data)
     }
 
     async beforeSubmit(event) {
+        if (this.ready) return
         event.preventDefault()
         await this.save()
+        this.ready = true
         event.target.closest('form').requestSubmit()
     }
 
     disconnect() {
         this.editor?.destroy?.()
+        this.editor = null
     }
 }

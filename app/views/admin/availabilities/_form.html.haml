@@ -1,0 +1,27 @@
+= form_with model: [:admin, availability], class: "card bg-base-100 shadow-sm max-w-xl" do |f|
+  .card-body.space-y-2
+    - if availability.errors.any?
+      .alert.alert-error.alert-soft
+        %ul.list-disc.pl-4
+          - availability.errors.full_messages.each do |m|
+            %li= m
+
+    %label.form-control.w-full
+      %span.label-text.mb-1 Jour
+      = f.select :weekday, Availability::WEEKDAYS.each_with_index.map { |n, i| [n, i] }, {}, class: "select select-bordered w-full"
+
+    .grid.grid-cols-2.gap-4
+      %label.form-control
+        %span.label-text.mb-1 Début
+        = f.time_field :start_time, class: "input input-bordered w-full"
+      %label.form-control
+        %span.label-text.mb-1 Fin
+        = f.time_field :end_time, class: "input input-bordered w-full"
+
+    %label.label.cursor-pointer.justify-start.gap-3.mt-2
+      = f.check_box :active, class: "toggle toggle-success"
+      %span.label-text Plage active
+
+    .card-actions.mt-4
+      = f.submit 'Créer la disponibilité', class: "btn btn-primary"
+      = link_to "Annuler", admin_availabilities_path, class: "btn btn-ghost"

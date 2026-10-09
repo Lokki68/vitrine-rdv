@@ -1,0 +1,39 @@
+- content_for :page_title, "Rendez-vous ##{@appointment.id}"
+
+.grip.gap-6.lg:grid-cols-3
+  .card.bg-base-100.shadow-sm.lg:col-span-2
+    .card-body
+      .flex.items-center.justify-between
+        %h2.card-title Détails
+        = status_badge(@appointment.status)
+      %dl.grid.grid-cols-3.gap-y-3.text-sm.mt-2
+        %dt.opacity-60 Prestation
+        %dd.col-span-2= @appointment.service.name
+        %dt.opacity-60 Début
+        %dd.col-span-2= l(@appointment.starts_at, format: :long)
+        %dt.opacity-60 Fin
+        %dd.col-span-2= l(@appointment.ends_at, format: :long)
+        %dt.opacity-60 Client
+        %dd.col-span-2= @appointment.client_name
+        %dt.opacity-60 Email
+        %dd.col-span-2= mail_to @appointment.client_email, nil, class: "link"
+        %dt.opacity-60 Téléphone
+        %dd.col-span-2= @appointment.client_phone.presence || "—"
+        %dt.opacity-60 Notes
+        %dd.col-span-2.whitespace-pre-line= @appointment.client_notes.presence || "—"
+
+    .card.bg-base-100.shadow-sm
+      .card-body
+        %h2.card-title Paiement
+        %dl.grid.grid-cols-2.gap-y-3.text-sm.mt-2
+          %dt.opacity-60 Acompte
+          %dd= euros(@appointment.service.deposit_cents)
+          %dt.opacity-60 Payé le
+          %dd= @appointment.paid_at ? l(@appointment.paid_at, format: :short) : "—"
+          %dt.opacity-60 Session Stripe
+          %dd.truncate= @appointment.stripe_checkout_session_id.presence || "—"
+        - if @appointment.pending_payment? || @appointment.confirmed?
+          .card-actions.mt-4
+            = button_to "Annuler le rendez-vous", cancel_admin_appointment_path(@appointment), method: :patch, class: "btn btn-error btn-outline btn-sm w-full", form: {data: {turbo_confirm: "Annuler ce rendez-vous ?"}}
+
+= link_to "← Retour", admin_appointments_path, class: "btn btn-ghost btn-sm mt-6"

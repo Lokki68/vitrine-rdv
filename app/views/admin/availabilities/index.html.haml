@@ -1,0 +1,28 @@
+- content_for :page_title, "Disponibilités"
+
+.flex.justify-end.mb-4
+  = link_to "Ajouter une plage", new_admin_availability_path, class: "btn btn-primary btn-sm"
+
+.card.bg-base-100.shadow-sm
+  .overflow-x-auto
+    %table.table
+      %thead
+        %tr
+          %th Jour
+          %th Horaires
+          %th Actif
+          %th
+      %tbody
+        - @availabilities.each do |av|
+          %tr.hover
+            %td.font-medium= av.weekday_name
+            %td= "#{av.start_time.strftime('%H:%M')} – #{av.end_time.strftime('%H:%M')}"
+            %td
+              %span{class: "badge badge-soft #{av.active? ? 'badge-success' : 'badge-ghost'}"}= av.active? ? "Oui" : "Non"
+            %td.text-right
+              .join
+                = link_to "Modifier", edit_admin_availability_path(av), class: "btn btn-ghost btn-xs join-item"
+                = button_to "Supprimer", admin_availability_path(av), method: :delete, class: "btn btn-ghost btn-xs text-error join-item", form: {data: {turbo_confirm: "Supprimer cette plage ?"}}
+        - if @availabilities.empty?
+          %tr
+            %td.text-center.opacity-60{colspan: 4} Aucune plage définie.

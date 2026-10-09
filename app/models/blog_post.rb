@@ -22,11 +22,22 @@ class BlogPost < ApplicationRecord
   end
 
   validates :title, presence: true
-  validates :content, presence: true
+  validate :content_has_blocks
 
   scope :visible, -> { published.where("published_at <= ?", Time.current).order(published_at: :desc) }
 
+  def content=(value)
+    value = JSON.parse(value) if value.is_a?(String) && value.present?
+    super(value)
+  rescue JSON::ParserError
+    super(nil)
+  end
+
   private
+
+  def content_has_blocks
+    errors.add(:content, :blank) unless content.is_a?(Hash) && content['blocks'].present?
+  end
 
   def publishable?
     title.present? && content.present? && content["blocks"].present?

@@ -1,0 +1,32 @@
+-# app/views/admin/blog_posts/index.html.haml
+- content_for :page_title, "Articles"
+
+.flex.justify-end.mb-4
+  = link_to "Nouvel article", new_admin_blog_post_path, class: "btn btn-primary btn-sm"
+
+.card.bg-base-100.shadow-sm
+  .overflow-x-auto
+    %table.table
+      %thead
+        %tr
+          %th Titre
+          %th Statut
+          %th Publié le
+          %th
+      %tbody
+        - @posts.each do |post|
+          %tr.hover
+            %td.font-medium= link_to post.title, edit_admin_blog_post_path(post), class: "link link-hover"
+            %td= status_badge(post.status)
+            %td= post.published_at ? l(post.published_at, format: :short) : "—"
+            %td.text-right
+              .join
+                - if post.draft?
+                  = button_to "Publier", publish_admin_blog_post_path(post), method: :patch, class: "btn btn-ghost btn-xs join-item"
+                - else
+                  = button_to "Dépublier", unpublish_admin_blog_post_path(post), method: :patch, class: "btn btn-ghost btn-xs join-item"
+                = link_to "Modifier", edit_admin_blog_post_path(post), class: "btn btn-ghost btn-xs join-item"
+                = button_to "Supprimer", admin_blog_post_path(post), method: :delete, class: "btn btn-ghost btn-xs text-error join-item", form: {data: {turbo_confirm: "Supprimer cet article ?"}}
+        - if @posts.empty?
+          %tr
+            %td.text-center.opacity-60{colspan: 4} Aucun article.

@@ -1,25 +1,40 @@
-= form_with model: [:admin, :blog_posts], class: 'space-y-4' do |form|
-  .form_control
-    = form.label :title, "Titre", class: 'label'
-    = form.text_field :title, class: 'input input-bordered w-full'
+-# app/views/admin/blog_posts/_form.html.haml
+= form_with model: [:admin, blog_post],
+  data: { controller: "editor",
+          editor_upload_url_value: admin_upload_image_path,
+          action: "submit->editor#beforeSubmit" },
+  class: "card bg-base-100 shadow-sm max-w-3xl" do |f|
+  .card-body.space-y-2
+    - if f.object.errors.any?
+      .alert.alert-error.alert-soft
+        %ul.list-disc.pl-4
+          - f.object.errors.full_messages.each do |m|
+            %li= m
 
-  .form_control
-    = form.label :excerpt, "Résumé", class: 'label'
-    = form.text_area :excerpt, rows: 3, class: "textarea textarea-bordered w-full"
+    %label.form-control.w-full
+      %span.label-text.mb-1 Titre
+      = f.text_field :title, class: "input input-bordered w-full"
 
-  .form-control
-    = f.label :cover, "Image de couverture", class: "label"
-    = f.file_field :cover, class: "file-input file-input-bordered w-full"
+    %label.form-control.w-full
+      %span.label-text.mb-1 Slug
+      = f.text_field :slug, placeholder: "généré automatiquement si vide", class: "input input-bordered w-full"
 
-  .form-control
-    = f.label :content, "Contenu", class: "label"
-    %div{data: { controller: "editor",
-                 editor_upload_url_value: admin_uploads_image_path }}
-      = f.hidden_field :content, value: post.content.to_json, data: { editor_target: "input" }
-      .border.rounded-lg.p-4.bg-white.min-h-96{data: { editor_target: "holder" }}
+    %label.form-control.w-full
+      %span.label-text.mb-1 Résumé
+      = f.text_area :excerpt, rows: 3, class: "textarea textarea-bordered w-full"
 
-  .form-control
-    = f.label :status, "Statut", class: "label"
-    = f.select :status, BlogPost.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "select select-bordered"
+    %label.form-control.w-full
+      %span.label-text.mb-1 Image de couverture
+      = f.file_field :cover, accept: "image/*", class: "file-input file-input-bordered w-full"
 
-  = f.submit "Enregistrer", class: "btn btn-primary"
+    %div
+      %span.label-text.mb-1.block Contenu
+      %div{ class: "border border-base-300 rounded-lg p-3 min-h-[300px]",
+            data: { editor_target: "holder" } }
+      = f.hidden_field :content,
+        value: f.object.content.presence&.to_json,
+        data: { editor_target: "input" }
+
+    .card-actions.mt-4
+      = f.submit class: "btn btn-primary"
+      = link_to "Annuler", admin_blog_posts_path, class: "btn btn-ghost"

@@ -1,0 +1,45 @@
+- content_for :page_title, "Paiements"
+
+%h2.text-lg.font-semibold.mb-3 En attente
+.card.bg-base-100.shadow-sm.mb-8
+  .overflow-x-auto
+    %table.table
+      %thead
+        %tr
+          %th Client
+          %th Rendez-vous
+          %th Acompte
+          %th Expire à
+          %th
+      %tbody
+        - @pending.each do |a|
+          %tr.hover
+            %td= a.client_name
+            %td= l(a.starts_at, format: :short)
+            %td= euros(a.service.deposit_cents)
+            %td= a.expires_at ? l(a.expires_at, format: :short) : "—"
+            %td.text-right= link_to "Détail", admin_appointment_path(a), class: "btn btn-ghost btn-xs"
+        - if @pending.empty?
+          %tr
+            %td.text-center.opacity-60{colspan: 5} Aucun paiement en attente.
+
+%h2.text-lg.font-semibold.mb-3 Reçus récemment
+.card.bg-base-100.shadow-sm
+  .overflow-x-auto
+    %table.table
+      %thead
+        %tr
+          %th Client
+          %th Payé le
+          %th Montant
+          %th
+      %tbody
+        - @paid.each do |a|
+          %tr.hover
+            %td= a.client_name
+            %td= l(a.paid_at, format: :short)
+            %td= euros(a.service.deposit_cents)
+            %td.text-right= link_to "Détail", admin_appointment_path(a), class: "btn btn-ghost btn-xs"
+        - if @paid.empty?
+          %tr
+            %td.text-center.opacity-60{colspan: 4} Aucun paiement reçu.

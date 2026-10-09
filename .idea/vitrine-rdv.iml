@@ -176,6 +176,8 @@
     <orderEntry type="library" scope="PROVIDED" name="sshkit (v1.25.1, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stimulus-rails (v1.3.4, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stripe (v20.0.0, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="tailwindcss-rails (v4.6.0, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="tailwindcss-ruby (v4.3.3, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="temple (v0.10.7, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.5.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thruster (v0.1.27, mise: 4.0.6) [gem]" level="application" />
