@@ -1,0 +1,27 @@
+.container.mx-auto.px-4.py-12.max-w-2xl
+  %h1.text-3xl.font-bold.mb-8 Prendre rendez-vous
+
+  = form_with model: @appointment, url: appointments_path, class: 'space-y-6' do |form|
+    = hidden_field_tag :service_id, @service.id
+
+    %div{data: { controller: 'booking', booking_slot_url_value: slots_appointments_path(service_id: @service.id) }}
+      %label.block.font-medium.mb-2 Choisissez une date
+      %input.input.input-bordered.w-full{type: 'date', min: Date.current, data: { action: "change->booking#loadSlots" }}
+
+      = turbo_frame_tag 'slots', class: "block mt-6" do
+        %p.text-slate-500 Sélectionnez une date pour voir les créneaux
+    
+    = form.hidden_field :starts_at, data: { booking_target: "starts_at" }
+
+    .grid.gap-4
+      = form.text_field :client_name, placeholder: "Nom complet", class: "input input-bordered w-full", required: true
+      = form.email_field :client_email, placeholder: "Email", class: "input input-bordered w-full", required: true
+      = form.telephone_field :client_phone, placeholder: "Téléphone", class: "input input-bordered w-full", required: true
+      = form.text_area :client_notes, placeholder: "Informations complémentaires", rows: 3, class: "textarea textarea-bordered w-full"
+    
+    %p.text-sm.text-slate-600
+      Un accompte de 
+      %strong= number_to_currency(@service.deposit, unit: "€", format: "%n %u")
+      sera demandé pour confirmer votre réservation.
+    
+    = form.submit "Payer l'accompte et réserver", class: "btn btn-primary w-full"

@@ -1,0 +1,8 @@
+= turbo_frame_tag 'slots' do
+  - if slots.empty?
+    %p.text-slate-500 Aucun créneau disponible ce jour-là.
+  - else
+    .grid.grid-cols-3.sm:grid-cols-4.gap-2
+      - slots.each do |slot|
+        %button.btn.btn-outline{type: 'button', data: { action: "booking#select", booking_iso_param: slot.starts_at.iso8601 }}
+          = l(slot.starts_at, format: "%H:%M")
