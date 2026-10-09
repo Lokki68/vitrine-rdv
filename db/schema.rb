@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_075559) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_09_093635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,14 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_075559) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "admins", force: :cascade do |t|
-    t.string "email"
-    t.string "password_digest"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
   create_table "appointments", force: :cascade do |t|
@@ -138,6 +130,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_075559) do
     t.index ["slug"], name: "index_services_on_slug", unique: true
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "time_offs", force: :cascade do |t|
     t.date "starts_on", null: false
     t.date "ends_on", null: false
@@ -147,6 +148,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_075559) do
     t.index ["starts_on", "ends_on"], name: "index_time_offs_on_starts_on_and_ends_on"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "sessions", "users"
 end

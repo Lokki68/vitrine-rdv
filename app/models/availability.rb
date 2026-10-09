@@ -1,10 +1,15 @@
 class Availability < ApplicationRecord
+  WEEKDAYS = %w[Dimanche Lundi Mardi Mercredi Jeudi Vendredi Samedi].freeze
+  
   validates :weekday, inclusion: { in: 0..6 }
   validates :start_time, :end_time, presence: true
   validate :end_after_start
 
   scope :active, -> { where(active: true) }
+  scope :by_weekday, -> { order(:weekday, :start_time) }
   scope :for_weekday, ->(wday) { where(weekday: wday).order(:start_time) }
+  
+  def weekday_name = WEEKDAYS[weekday]
 
   private
 

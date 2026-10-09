@@ -1,14 +1,49 @@
 !!!
-%html
+%html{lang: "fr", data: {theme: "admin"}}
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title Admin    
-    %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
+    %title= content_for?(:page_title) ? "#{yield(:page_title)} · Admin" : "Admin"
+    %meta{name: "viewport", content: "width=device-width,initial-scale=1"}
     = csrf_meta_tags
+    = csp_meta_tag
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
-    = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
-  %body.min-h-screen.bg-base-200
-    = render "admin/shared/navbar"
-    .container.mx-auto.p-6
-      = render "shared/flash"
-      = yield
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_importmap_tags
+  %body.bg-base-200.min-h-screen
+    .drawer.lg:drawer-open
+      %input#admin-drawer.drawer-toggle{type: "checkbox"}
+
+      .drawer-content.flex.flex-col
+        -# Barre du haut (mobile + titre)
+        .navbar.bg-base-100.border-b.border-base-300.lg:hidden
+          .flex-none
+            %label.btn.btn-square.btn-ghost{for: "admin-drawer"}
+              %svg.h-5.w-5{xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
+                %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M4 6h16M4 12h16M4 18h16"}
+          .flex-1
+            %span.text-lg.font-semibold Admin
+
+        %main.p-4.lg:p-8
+          .mb-6
+            %h1.text-2xl.font-bold= yield(:page_title)
+          = render "shared/flash"
+          = yield
+
+      .drawer-side.z-10
+        %label.drawer-overlay{for: "admin-drawer", "aria-label": "Fermer le menu"}
+        %aside.bg-base-100.border-r.border-base-300.min-h-full.w-64.flex.flex-col
+          .p-4.border-b.border-base-300
+            - # Todo changer Nom Studio
+            %span.text-lg.font-semibold Nom Studio
+            %p.text-xs.opacity-60 Espace administrateur
+
+          %ul.menu.w-full.flex-1.p-2
+            %li= nav_link "Tableau de bord", admin_root_path
+            %li= nav_link "Rendez-vous", admin_appointments_path
+            %li= nav_link "Paiements", admin_payments_path
+            %li= nav_link "Disponibilités", admin_availabilities_path
+            %li= nav_link "Articles", admin_blog_posts_path
+
+          .p-2.border-t.border-base-300
+            %ul.menu.w-full
+              %li= link_to "Voir le site", root_path, target: "_blank"
+              %li= button_to "Se déconnecter", session_path, method: :delete

@@ -1,0 +1,9 @@
+- content_for :title, @post.title
+%article.mx-auto.max-w-3xl.px-6.py-16
+  = link_to "← Retour au blog", posts_path, class: "text-sm text-stone-500 hover:text-stone-300"
+  %h1.mt-6.text-4xl.font-semibold.tracking-tight= @post.title
+  %time.mt-3.block.text-sm.text-stone-500= l(@post.published_at.to_date, format: :long)
+  - if @post.cover.attached?
+    = image_tag @post.cover, class: "mt-8 w-full rounded-xl"
+  .mt-10.space-y-6.text-stone-300
+    = render_editorjs(@post.content)

@@ -1,0 +1,6 @@
+- content_for :page_title, "Rendez-vous"
+
+.tabs.tabs-box.mb-6.w-fit
+  = link_to "Tous", admin_appointments_path, class: ['tab', ("tab-active" if params[:status].blank?)]
+  - Appointment.aasm.states.map(&:name).each do |status|
+    = link_to AdminHelper::STATUS_LABELS[status], admin_appointments_path(status: status), class: ['tab', ('tab-active' if params[:status]&.to_sym == status)]

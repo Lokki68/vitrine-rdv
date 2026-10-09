@@ -13,11 +13,11 @@ class BlogPost < ApplicationRecord
     state :published
 
     event :publish do
-      transition from: :draft, to: :published, guard: :publishable?, after: :stamp_published_at
+      transitions from: :draft, to: :published, guard: :publishable?, after: :stamp_published_at
     end
 
     event :unpublish do
-      transition from:  :published, to: :draft
+      transitions from:  :published, to: :draft
     end
   end
 

@@ -1,12 +1,17 @@
-= tag.div(flash[:alert], style: "color:red") if flash[:alert]
-= tag.div(flash[:notice], style: "color:green") if flash[:notice]
-
-= form_with url: session_path do |form|
-  = form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address]
-  %br
-  = form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72
-  %br
-  = form.submit "Sign in"
-%br
-
-= link_to "Forgot password?", new_password_path
+- content_for :page_title, "Connexion"
+.hero.min-h-screen.bg-base-200
+  .card.bg-base-100.w-full.max-w-sm.shadow-md
+    .card-body.text-primary
+      %h1.card-title.text-xl Connexion administrateur
+      = render "shared/flash"
+      = form_with url: session_path, class: "space-y-2" do |f|
+        %label.form-control.w-full
+          %span.label-text.mb-1 Email
+          = f.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "vous@exemple.fr", class: "input input-bordered w-full"
+        %label.form-control.w-full
+          %span.label-text.mb-1 Mot de passe
+          = f.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, class: "input input-bordered w-full"
+        .card-actions.mt-4
+          = f.submit "Se connecter", class: "btn btn-primary w-full"
+      .text-center.mt-2
+        = link_to "Mot de passe oublié ?", new_password_path, class: "link link-hover text-sm"

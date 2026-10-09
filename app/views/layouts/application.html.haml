@@ -1,21 +1,14 @@
+-# app/views/layouts/application.html.haml
 !!!
-%html
+%html{lang: "fr", data: { theme: 'studio'}}
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title= content_for(:title) || "Vitrine Rdv"
-    %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
-    %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}/
-    %meta{:content => "Vitrine Rdv", :name => "application-name"}/
-    %meta{:content => "yes", :name => "mobile-web-app-capable"}/
+    %title= content_for(:title) || "Studio de tatouage"
+    %meta{name: "viewport", content: "width=device-width,initial-scale=1"}
     = csrf_meta_tags
     = csp_meta_tag
-    = yield :head
-    %link{:href => "/icon.png", :rel => "icon", :type => "image/png"}/
-    %link{:href => "/icon.svg", :rel => "icon", :type => "image/svg+xml"}/
-    %link{:href => "/icon.png", :rel => "apple-touch-icon"}/
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
-    = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
-  %body.bg-white.text-slate-900
-    = render "shared/navbar"
+    = javascript_importmap_tags
+  %body.min-h-screen.bg-stone-950.text-stone-100.antialiased
+    = render "shared/public_nav"
     %main= yield
-    = render "shared/footer"
+    = render "shared/public_footer"

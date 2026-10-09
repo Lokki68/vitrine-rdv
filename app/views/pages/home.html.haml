@@ -1,0 +1,11 @@
+- content_for :title, "Accueil"
+%section{class: "mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center px-6 text-center"}
+  %span{class: "mb-6 inline-block rounded-full border border-amber-500/40 px-4 py-1 text-xs uppercase tracking-widest text-amber-400"}
+    En construction
+  %h1.text-4xl.font-semibold.tracking-tight.sm:text-6xl
+    Le site arrive bientôt
+  %p.mt-6.max-w-xl.text-lg.text-stone-400
+    Ici, vous découvrirez bientôt le travail et l'univers de la tatoueuse,
+    ainsi que la possibilité de réserver votre séance en ligne.
+  = link_to "Voir le blog", posts_path,
+    class: "mt-10 rounded-full bg-amber-500 px-6 py-3 text-sm font-medium text-stone-950 hover:bg-amber-400"

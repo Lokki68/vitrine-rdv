@@ -1,2 +1,41 @@
-%h1 Admin::Dashboard#index
-%p Find me in app/views/admin/dashboard/index.html.haml
+- content_for :page_title, "Tableau de bord"
+
+.stats.stats-vertical.lg:stats-horizontal.shadow.w-full.bg-base-100.mb-8
+  .stat
+    .stat-title RDV à venir
+    .stat-value= @upcomming_count
+    .stat-desc Confirmés
+
+  .stat
+    .stat-title Payment en attente
+    .stat-value= @pending_count
+    .stat-desc Acompte non réglé
+
+  .stat
+    .stat-title Articles publiés
+    .stat-value= @published_posts_count
+    .stat-desc= "#{@draft_posts_count} brouillons"
+
+.card.bg-base-100.shadow-sm
+  .card-body
+    .flex.items-center.justify-between
+      %h2.card-title Prochains rendez-vous
+      = link_to "Tout voir", admin_appointments_path, class: "btn btn-ghost btn-sm"
+
+    - if @next_appointments.any?
+      .overflow-x-auto
+        %table.table
+          %thead
+            %tr
+              %th Date
+              %th Client
+              %th Status
+          %tbody
+            - @next_appointments.each do |appointment|
+              %tr.hover
+                %td= l(appointment.starts_at, format: :long)
+                %td= link_to appointment.client_name, admin_appointment_path(appointment), class: "link link-hover"
+                %td= status_badge(appointment.status)
+    - else
+      %p.opacity-60 Aucun rendez-vous à venir.
+

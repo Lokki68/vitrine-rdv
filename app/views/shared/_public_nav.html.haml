@@ -1,0 +1,7 @@
+%header.border-b.border-stone-800
+  .mx-auto.flex.max-w-6xl.items-center.justify-between.px-6.py-5
+    - # Todo: changer "Nom du studio"
+    = link_to "Nom du studio", root_path, class: 'text-xl font-semibold tracking-wide'
+    %nav.flex.gap-6.text-sm.text-stone-200
+      = link_to "Accueil", root_path, class: 'hover:text-white'
+      = link_to "Blog", posts_path, class: 'hover:text-white'

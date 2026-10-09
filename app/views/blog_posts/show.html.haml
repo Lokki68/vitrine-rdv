@@ -1,7 +1,0 @@
-%article.container.mx-auto.px-4.py-12.max-w-3xl
-  %h1.text-4xl.font-bold.mb-4= @blog_post.title
-  %time.text-sm.text-slate-500= l(@blog_post.published_at, format: :long)
-  - if @blog_post.cover.attached?
-    = image_tag @blog_post.cover, class: "w-full rounded-xl my-8"
-  .prose.prose-lg.max-w-none
-    = render_editorjs(@blog_post.content)
