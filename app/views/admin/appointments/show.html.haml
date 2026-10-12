@@ -1,5 +1,10 @@
 - content_for :page_title, "Rendez-vous ##{@appointment.id}"
 
+- if @appointment.status == 'pending_payment'
+= button_to "Simuler le paiment de l'accompte", simluate_payment_admin_appointment_path(@appointment), class: "rounded bg-green-600 text-white px-4 py-2", method: :patch
+= button_to "Simuler l' expiration", simluate_expiration_admin_appointment_path(@appointment), class: "rounded bg-green-600 text-white px-4 py-2", method: :patch
+
+
 .grip.gap-6.lg:grid-cols-3
   .card.bg-base-100.shadow-sm.lg:col-span-2
     .card-body

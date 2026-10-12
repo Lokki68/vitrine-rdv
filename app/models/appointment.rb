@@ -5,6 +5,7 @@ class Appointment < ApplicationRecord
   PENDING_TTL = 30.minutes
 
   belongs_to :service
+  belongs_to :client, optional: true
 
   aasm column: :status, whiny_persistence: true do
     state :pending_payment, initial: true
@@ -41,6 +42,8 @@ class Appointment < ApplicationRecord
 
   before_validation :set_end_time, on: :create
   before_validation :set_expiration, on: :create
+  before_validation :copy_client_attributes, if: -> { client.present? }
+
   has_secure_token :cancellation_token
 
   # Créneaux qui bloquent l'agenda
@@ -51,7 +54,24 @@ class Appointment < ApplicationRecord
   scope :upcoming, -> { where("starts_at > ?", Time.current).order(:starts_at) }
   scope :stale_pending, -> { where(status: "pending_payment").where("expires_at <= ?", Time.current) }
 
+  delegate :kind, :kind_label, to: :service
+
+  def simulate_payment
+    update!(
+      status: "confirmed",
+      paid_at: Time.current,
+      expires_at: nil,
+      stripe_checkout_session_id: "sim_#{SecureRandom.hex(12)}"
+    )
+  end
+
   private
+
+  def copy_client_attributes
+    self.client_name = client.full_name
+    self.client_email = client.email.to_s
+    self.client_phone = client.phone.to_s
+  end
 
   def started?
     starts_at <= Time.current

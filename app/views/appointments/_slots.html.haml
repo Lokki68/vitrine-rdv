@@ -1,8 +1,11 @@
-= turbo_frame_tag 'slots' do
+-# app/views/appointments/_slots.html.haml
+= turbo_frame_tag "slots" do
   - if slots.empty?
-    %p.text-slate-500 Aucun créneau disponible ce jour-là.
+    %p.text-sm.text-gray-500 Aucun créneau disponible ce jour-là.
   - else
     .grid.grid-cols-3.sm:grid-cols-4.gap-2
       - slots.each do |slot|
-        %button.btn.btn-outline{type: 'button', data: { action: "booking#select", booking_iso_param: slot.starts_at.iso8601 }}
-          = l(slot.starts_at, format: "%H:%M")
+        %label.cursor-pointer
+          = radio_button_tag "appointment[starts_at]", slot.iso8601, false, required: true, class: "peer sr-only"
+          %span.block.text-center.rounded.border.py-2.text-sm.peer-checked:bg-black.peer-checked:text-white
+            = l(slot, format: "%H:%M")

@@ -21,7 +21,12 @@ Rails.application.routes.draw do
     root "dashboard#index"
 
     resources :appointments, only: %i[index show] do
-      member { patch :cancel }
+
+      member do
+        patch :cancel
+        patch :simulate_payment
+        patch :simulate_expiration
+      end
     end
     resources :payments, only: :index
     resources :availabilities, except: :show
