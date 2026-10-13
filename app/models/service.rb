@@ -1,5 +1,5 @@
 class Service < ApplicationRecord
-  extends FriendlyId
+  extend FriendlyId
   friendly_id :name, use: :slugged
 
   has_many :appointments, dependent: :restrict_with_error
@@ -11,8 +11,17 @@ class Service < ApplicationRecord
 
   scope :active, -> { where(active: true).order(:position) }
 
-  def price = price_cents / 100.0
-  def deposit = deposit_cents / 100.0
+  def price_euros = price_cents / 100.0
+
+  def price_euros=(value)
+    self.price_cents = (value.to_s.tr(",", ".").to_f * 100).round
+  end
+
+  def deposit_euros = deposit_cents / 100.0
+
+  def deposit_euros=(value)
+    self.deposit_cents = (value.to_s.tr(",", ".").to_f * 100).round
+  end
 
   private
 

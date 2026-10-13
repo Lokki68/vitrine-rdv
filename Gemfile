@@ -55,3 +55,4 @@ gem "jsbundling-rails", "~> 1.3"
 gem "aasm"
 
 gem "tailwindcss-rails", "~> 4.6"
+gem "view_component"

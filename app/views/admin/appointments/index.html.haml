@@ -23,7 +23,7 @@
               .font-medium = appointment.client_name
               .text-xs.opacity-60= appointment.client_email
             %td= appointment.service.name
-            %td= status_badge(appointment.status)
+            %td= render StatusBadgeComponent.new(appointment: appointment)
             %td.text-right= link_to 'Détail', admin_appointment_path(appointment), class: 'btn btn-ghost btn-xs'
         - if @appointments.empty?
           %tr

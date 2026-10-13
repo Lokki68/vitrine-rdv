@@ -1,0 +1,27 @@
+- content_for :page_title, "Clients"
+
+.flex.items-center.justify-end.mb-6
+  = link_to "Nouveau Client", new_admin_client_path, class: 'btn btn-primary'
+
+.overflow-x-auto.bg-base-100.rounded-box.shadow
+  %table.table
+    %thead
+      %tr
+        %th Nom
+        %th Email
+        %th Téléphone
+        %th.text-right Actions
+    %tbody
+      - if @clients.empty?
+        %tr
+          %td.text-center.opacity-60{colspan: 4} Aucun client
+      - @clients.each do |client|
+        %tr.hover
+          %td.font-medium= link_to client.full_name, admin_client_path(client), class: 'link link-hover'
+          %td= client.email
+          %td= client.phone
+          %td.text-right
+            .join
+              = link_to "Voir", admin_client_path(client), class: 'btn btn-xs join-item'
+              = link_to 'Modifier', edit_admin_client_path(client), class: 'btn btn-xs join-item'
+              = button_to "Supprimer", admin_client_path(client), method: :delete, class: 'btn btn-xs btn-error join-item', form: { data: { turbo_confirm: "Supprimer ce client et ses rendez-vous ?" } }

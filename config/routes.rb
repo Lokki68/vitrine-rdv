@@ -20,14 +20,15 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
 
-    resources :appointments, only: %i[index show] do
-
+    resources :clients
+    resources :appointments do
       member do
         patch :cancel
         patch :simulate_payment
         patch :simulate_expiration
       end
     end
+    resources :services, except: %i[show]
     resources :payments, only: :index
     resources :availabilities, except: :show
     resources :blog_posts, path: 'articles' do

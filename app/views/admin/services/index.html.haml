@@ -1,0 +1,38 @@
+- content_for :page_title, "Prestations"
+
+.flex.items-center.justify-end.mb-6
+  = link_to "Nouvelle prestation", new_admin_service_path, class: 'btn btn-primary'
+
+
+.overflow-x-auto.bg-base-100.rounded-box.shadow
+  %table.table
+    %thead
+      %tr
+        %th Ordre
+        %th Nom
+        %th Durée
+        %th Prix
+        %th Acompte
+        %th Status
+        %th.tyext-right Actions
+    %tbody
+      - if @services.empty?
+        %tr
+          %td.text-center.opacity-60{colspan: 7} Aucune prestations
+      - @services.each do |service|
+        %tr.hover
+          %td= service.position
+          %td.font-medium= service.name
+          %td= "#{service.duration_minutes} min"
+          %td= number_to_currency(service.price_euros, unit: "€", format: "%n %u")
+          %td= number_to_currency(service.deposit_euros, unit: "€", format: "%n %u")
+          %td
+            - if service.active?
+              %span.badge.badge-success Active
+            - else
+              %span.badge.badge-ghost Inactive
+          %td.text-right
+            .join
+              = link_to "Modifier", edit_admin_service_path(service), class: "btn btn-xs join-item"
+              = button_to "Supprimer", admin_service_path(service), method: :delete, class: 'btn btn-xs btn-error join-item', form: { data: { turbo_confirm: "Supprimer cette prestation ?" } }
+

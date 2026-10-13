@@ -1,0 +1,27 @@
+= form_with model: [:admin, client], class: "space-y-4 max-w-2xl" do |f|
+  = render "admin/shared/errors", record: client
+
+  .grid.gap-4.sm:grid-cols-2
+    .form-control
+      = f.label :first_name, "Prénom", class: "label"
+      = f.text_field :first_name, class: "input input-bordered w-full"
+    .form-control
+      = f.label :last_name, "Nom", class: "label"
+      = f.text_field :last_name, class: "input input-bordered w-full"
+
+  .grid.gap-4.sm:grid-cols-2
+    .form-control
+      = f.label :email, "Email", class: "label"
+      = f.email_field :email, class: "input input-bordered w-full"
+    .form-control
+      = f.label :phone, "Téléphone", class: "label"
+      = f.telephone_field :phone, class: "input input-bordered w-full"
+
+  .form-control
+    = f.label :notes, "Notes internes", class: "label"
+    = f.text_area :notes, rows: 5, class: "textarea textarea-bordered w-full",
+      placeholder: "Allergies, projet de tatouage, préférences..."
+
+  .flex.gap-2.pt-2
+    = f.submit "Créer le client", class: "btn btn-primary"
+    = link_to "Annuler", admin_clients_path, class: "btn btn-ghost"

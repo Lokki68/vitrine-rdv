@@ -1,0 +1,41 @@
+- content_for :page_title, "Client - #{@client.full_name}"
+
+.flex.items-center.justify-end.mb-6
+  .flex.gap-2
+    = link_to "Retour", admin_clients_path, class: 'btn btn-ghost'
+    = link_to "modifier", edit_admin_client_path(@client), class: 'btn'
+    = link_to "Nouveau rendez-vous", new_admin_appointment_path(client_id: @client_id), class: 'btn btn-primary'
+
+.grid.gap-6.lg:grid-cols-3
+  .card.bg-base-100.shadow.lg:col-span-1
+    .card-body
+      %h2.card-title Coordonnées
+      %p= @client.email.presence || "Email non renseigné"
+      %p= @client.phone.presence || "Téléphone non renseigné"
+      - if @client.notes.present?
+        .divider Notes internes
+        %p.whitespace-pre-line= @client-notes
+
+  .card-bg-base-100.shadow.lg:col-span-2
+    .card-body
+      %h2.card-title Historique des rendez-vous
+      - if @appointments.empty?
+        %p.opacity-60 Aucun rendez-vous pour ce client
+      - else
+        .overflow-x-auto
+          %table.table
+            %thead
+              %tr
+                %th Date
+                %th Prestation
+                %th Status
+                %th
+            %tbody
+              - @appointments.each do |appointment|
+                %tr.hover
+                  %td= l(appointment.starts_at, format: "%d/%m/%Y %H:%M")
+                  %td
+                    = appointment.service.name
+                    %span.badge.badge-outline.badge-sm.ml-1= appointment.kind_label
+                  %td= render StatusBadgeComponent.new(appointment: appointment)
+                  %td.text-right= link_to "Voir", admin_appointment_path(appointment), class: 'btn btn-xs'
