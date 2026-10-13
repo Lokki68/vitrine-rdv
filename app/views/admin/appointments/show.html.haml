@@ -41,4 +41,4 @@
           .card-actions.mt-4
             = button_to "Annuler le rendez-vous", cancel_admin_appointment_path(@appointment), method: :patch, class: "btn btn-error btn-outline btn-sm w-full", form: {data: {turbo_confirm: "Annuler ce rendez-vous ?"}}
 
-= link_to "← Retour", admin_appointments_path, class: "btn btn-ghost btn-sm mt-6"
+  = link_to "← Retour", admin_appointments_path, class: "btn btn-ghost btn-sm mt-6"

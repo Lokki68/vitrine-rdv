@@ -1,0 +1,8 @@
+fr:
+  time:
+    formats:
+      default: "%d/%m/%Y à %H:%M"
+      long: le %d/%m/%Y à %H:%M
+      short: "%d/%m/%Y"
+      short_and_hour: "%d/%m/%Y %H:%M"
+

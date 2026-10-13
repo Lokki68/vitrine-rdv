@@ -54,8 +54,6 @@ class Appointment < ApplicationRecord
   scope :upcoming, -> { where("starts_at > ?", Time.current).order(:starts_at) }
   scope :stale_pending, -> { where(status: "pending_payment").where("expires_at <= ?", Time.current) }
 
-  delegate :kind, :kind_label, to: :service
-
   def simulate_payment
     update!(
       status: "confirmed",

@@ -11,7 +11,7 @@
   .form-control
     = f.label :service_id, "Prestation", class: "label"
     = f.collection_select :service_id, @services, :id,
-      ->(s) { "#{s.name} (#{s.kind_label}, #{s.duration_minutes} min)" }, {},
+      ->(s) { "#{s.name} (#{s.duration_minutes} min)" }, {},
       class: "select select-bordered w-full"
 
   .form-control

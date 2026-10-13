@@ -36,6 +36,5 @@
                   %td= l(appointment.starts_at, format: "%d/%m/%Y %H:%M")
                   %td
                     = appointment.service.name
-                    %span.badge.badge-outline.badge-sm.ml-1= appointment.kind_label
                   %td= render StatusBadgeComponent.new(appointment: appointment)
                   %td.text-right= link_to "Voir", admin_appointment_path(appointment), class: 'btn btn-xs'

@@ -20,7 +20,7 @@
           %tr.hover
             %td.whitespace-nowrap= l(appointment.starts_at, format: :long)
             %td
-              .font-medium = appointment.client_name
+              .font-medium= appointment.client_name
               .text-xs.opacity-60= appointment.client_email
             %td= appointment.service.name
             %td= render StatusBadgeComponent.new(appointment: appointment)

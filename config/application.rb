@@ -30,7 +30,6 @@ module VitrineRdv
     config.generators.system_tests = nil
 
     config.view_component.capture_compatibility_patch_enabled = true
-    config.view_component.generate.path = "app/views/components"
     config.generators do |g|
       g.template_engine :haml
     end

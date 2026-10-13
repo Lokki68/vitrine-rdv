@@ -79,7 +79,7 @@ module Admin
     def set_appointment = @appointment = Appointment.find(params[:id])
 
     def appointment_params
-      params = require(:appointment).permit(:client_id, :service_id, :starts_at, :client_notes, :status)
+      params.require(:appointment).permit(:client_id, :service_id, :starts_at, :client_notes, :status)
     end
 
     def prepare_manual_appointment(appointment)
