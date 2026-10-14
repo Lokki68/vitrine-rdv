@@ -4,7 +4,7 @@
   .flex.gap-2
     = link_to "Retour", admin_clients_path, class: 'btn btn-ghost'
     = link_to "modifier", edit_admin_client_path(@client), class: 'btn'
-    = link_to "Nouveau rendez-vous", new_admin_appointment_path(client_id: @client_id), class: 'btn btn-primary'
+    = link_to "Nouveau rendez-vous", new_admin_appointment_path(client_id: @client.id), class: 'btn btn-primary'
 
 .grid.gap-6.lg:grid-cols-3
   .card.bg-base-100.shadow.lg:col-span-1
@@ -14,7 +14,7 @@
       %p= @client.phone.presence || "Téléphone non renseigné"
       - if @client.notes.present?
         .divider Notes internes
-        %p.whitespace-pre-line= @client-notes
+        %p.whitespace-pre-line= @client.notes
 
   .card-bg-base-100.shadow.lg:col-span-2
     .card-body

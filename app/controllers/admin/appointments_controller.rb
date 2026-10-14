@@ -11,6 +11,7 @@ module Admin
     def show; end
 
     def new
+      console
       @appointment = Appointment.new(client_id: params[:client_id])
     end
 

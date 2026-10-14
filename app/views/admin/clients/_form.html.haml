@@ -23,5 +23,5 @@
       placeholder: "Allergies, projet de tatouage, préférences..."
 
   .flex.gap-2.pt-2
-    = f.submit "Créer le client", class: "btn btn-primary"
+    = f.submit client.persisted? ? "Modifier le client" : "Créer le client", class: "btn btn-primary"
     = link_to "Annuler", admin_clients_path, class: "btn btn-ghost"
